@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check_typing speed</title>
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .maindev{
+            height: 100vh;
+            width: 100%;
+            background-color: rgb(6, 4, 50);
+            color: #fff;
+            position: relative;
+            
+        }
+        .centerdev{
+           position: absolute;
+           left: 50%;
+           top: 50%;
+           transform: translate(-50% , -50%);
+           text-align: center;
+        }
+        h1{
+            text-transform: capitalize;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 3rem;
+            text-shadow: 1px 2px 3px rgb(218, 132, 178);
+        }
+        h3{
+            text-align: center;
+            font-size: 1.5rem;
+            color: azure;
+            font-family: 'Montserrat', sans-serif;
+        }
+        textarea{
+            background-color: #eae8e8;
+            border: 6px solid rgb(131, 205, 243);
+            box-shadow: 0 0 1px rgba(30, 149, 234, 0.2);
+            border-radius: 10px 10px 0 0;
+            font-size: 1.3rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        button{
+            padding: 10px 20px;
+            border: 5px solid rgb(156, 154, 154);
+            border-radius: 20px;
+            background-color: rgb(193, 103, 6);
+            font-size: 1.3rem;
+            color: #fff;
+            text-shadow: 1px 2px 3px rgb(180, 4, 124);
+        }
+    </style>
+</head>
+<body>
+    <div class="maindev">
+        <div class="centerdev">
+            <h1>Check Your Typing Speed</h1>
+            
+            <h3 id="msg"></h3>
+            <br>
+            <textarea name="word" id="wordarea" cols="70" rows="10" placeholder="Enter the above text here.. & check speed."></textarea>
+            <br>
+            <br>
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+    
+    <!-- javascript -->
+    <script>
+    // list of sentences
+    const setOfWord = ["If you want to master daily English phrases then learn how to ask questions",
+            "The sun rose over the horizon, painting the sky with hues of pink and gold.",
+            "The old oak tree stood tall, its branches reaching towards the heavens.",
+            "The aroma of freshly baked bread filled the air, making mouths water with anticipation.",
+            "Children laughed and played in the park, their joy echoing throughout the neighborhood.",
+            "The waves crashed against the rocky shore, creating a mesmerizing symphony of sound.",
+            "As the rain poured down, people hurriedly sought shelter, clutching their umbrellas tightly.",
+            "The stars twinkled in the night sky, forming constellations that have captivated humans for millennia.",
+            "The majestic waterfall cascaded down the cliffs, creating a breathtaking display of nature's power.",
+            "In the bustling city streets, cars honked and pedestrians hurriedly crossed intersections.",
+            "Amidst the chaos, a solitary musician played a haunting melody on his violin, capturing the attention of passersby."
+        ]
+        const msg=document.getElementById('msg');
+        const typeWords=document.getElementById('wordarea');
+        const btn = document.getElementById('btn');
+        let startTime , endTime;
+        // define play game
+        const playgame =() => {
+            let randomNumber = Math.floor(Math.random()*setOfWord.length);
+            msg.innerText = setOfWord[randomNumber];
+            let date = new Date();
+            startTime=date.getTime();
+            btn.innerText="Done"
+        }
+        const endplay =() =>{
+            let date = new Date();
+            endTime=date.getTime();
+            let totalTime=((endTime - startTime)/1000);
+
+            // how many words use type
+            let totalStr=typeWords.value;
+            let wordCount=wordCounter(totalStr);
+
+            let speed = Math.floor((wordCount/totalTime)*60);
+            let finalMsg="Your type total at " +speed+ " words/minutes ";
+            
+            finalMsg += compareWords(msg.innerText,totalStr);
+
+            
+            msg.innerText=finalMsg;
+        }
+        const compareWords =(str1,str2) =>{
+            let word1=str1.split(" ");
+            let word2=str2.split(" ");
+            let countw=0;
+            word1.forEach(function(item , index){
+                if(item==word2[index]){
+                    countw++;
+                }
+            })
+            let errorwords=(word1.length -countw);
+            return (countw + " Correct out of "+word1.length+" words & the total number of error are "+ errorwords+ ".");
+            
+        }
+        //total number of word count
+        const wordCounter = (str) =>{
+            let response = str.split(" ").length;
+            return response
+        }
+        btn.addEventListener('click', function(){
+            if(this.innerText=='Start'){
+
+                typeWords.disabled=false;
+                playgame();
+            }
+            else if(this.innerText == "Done"){
+                typeWords.disabled=true;
+                btn.innerText="Start";
+                endplay();
+            }
+        })
+    </script>
+</body>
+</html>
